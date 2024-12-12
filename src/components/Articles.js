@@ -1,6 +1,17 @@
 import React from 'react';
+import { sortByVotes } from '../App';
 
-function Articles() {
+const compareVotes = (a,b) => {
+    return (a.upvotes < b.upvotes);
+}
+
+const compareDate = (a,b) => {
+    return (a.date < b.date);
+}
+
+function Articles({articles, sortBy}) {
+
+    const sortedArticles = articles.sort(sortBy === sortByVotes ? compareVotes : compareDate);
 
     return (
         <div className="card w-50 mx-auto">
@@ -13,11 +24,15 @@ function Articles() {
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-testid="article" key="article-index">
-                    <td data-testid="article-title">Article 1 title</td>
-                    <td data-testid="article-upvotes">Article 1 title</td>
-                    <td data-testid="article-date">Article 1 title</td>
-                </tr>
+                {sortedArticles.map((article, index) => {
+                return (
+                    <tr data-testid="article" key={index}>
+                    <td data-testid="article-title">{article.title}</td>
+                    <td data-testid="article-upvotes">{article.upvotes}</td>
+                    <td data-testid="article-date">{article.date}</td>
+                    </tr>
+                );
+                })}
                 </tbody>
             </table>
         </div>
